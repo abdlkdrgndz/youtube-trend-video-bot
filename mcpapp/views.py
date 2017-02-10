@@ -45,6 +45,8 @@ def index(request):
             music_details['music_info'][number].append(t.get('src'))
             music_details['music_info'][number].append(q.get('href'))
 
+        merhaba  = "Ben yazılım geliştirici Emre Sarıdiken"
+
 
         # Html render.
         final_time = datetime.datetime.now().strftime('%H:%M:%S')
