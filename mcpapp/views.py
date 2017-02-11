@@ -17,35 +17,30 @@ def index(request):
     connect = requests.get('https://www.youtube.com/feed/trending')
     if connect:
         content = connect.text
-        limits, info_list = 4, []
+        limits, info_list = 7, []
         bs = BeautifulSoup(content, 'html.parser')
         avt_start   = bs.find_all('a', 'yt-uix-tile-link', limit=limits)                                # avt = all video titles starting attract
-        acn_start   = bs.find_all('a', 'g-hovercard', limit=(limits))                                   # acn = all channel name starting attract
+        acn_start   = bs.find_all('a', 'g-hovercard', limit=limits)                                   # acn = all channel name starting attract
         av          = bs.find_all('ul', 'yt-lockup-meta-info', limit=limits)                            # av =  all views and uploaded time select starting
-        img         = bs.select('span.yt-thumb-simple img', limit=limits)                               # img = all video images attract
+        img         = bs.find_all('img', attrs={'width' : 196, 'height' : 110}, limit=limits)                               # img = all video images attract
         link        = bs.find_all('a', 'yt-uix-tile-link', limit=limits)                                # link = all video links attract
 
-        #music details for dictionary. This dictionary music infos saving. start.
-        music_details = {'music_info' : [
-                               [],[],[],[],[],
-                            ]
-                         }
-        # end.
-        #for a in range(limits):
-            #music_details['music_info'].append(info_list)
+        #zip details append new list
+        avt, acn, imgs, links = [], [], [], []
+        for x in avt_start:
+            avt.append(x.get_text())
 
-        #all video titles append music_details list
-        number= 0
-        for x,y,z,t,q in zip(avt_start, acn_start, av, img, link):
-            number += 1
-            music_details['music_info'][number].append(x.get('title'))
-            music_details['music_info'][number].append(y.get_text())
-            music_details['music_info'][number].append(z.get_text()[10:])
-            music_details['music_info'][number].append(z.get_text()[:10])
-            music_details['music_info'][number].append(t.get('src'))
-            music_details['music_info'][number].append(q.get('href'))
+        for y in acn_start:
+            acn.append(y.get_text())
 
-        
+        for z in img:
+            imgs.append(z.get('src'))
+
+        for q in link:
+            links.append(q.get('href'))
+
+
+        music_details = zip(avt, acn, av, links, imgs)  #implode all datas
 
         # Html render.
         final_time = datetime.datetime.now().strftime('%H:%M:%S')

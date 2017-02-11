@@ -13,25 +13,28 @@
 
 
 
- {% for  val  in  music_details.values %}
+ {% for  music_detail  in  music_details %}
 
 
-    {% for music_detail in val|slice:"1:" %}
+
 
               <div class="col-sm-2 col-md-3">
                 <div class="thumbnail">
+
                   <img src="{{ music_detail.4 }}" class="img-responsive">
+
+
                   <div class="caption">
-                    <h3>{{ music_detail.0|lower }}</h3>
+                    <h3>{{ music_detail.0|truncatechars:"9" }}</h3>
                     <p>{{ music_detail.1 }}</p>
-                    <p>{{ music_detail.2 }} {{ music_detail.3 }}</p>
-                    <p><a target="_blank" href="https://www.youtube.com/{{ music_detail.5 }}" class="btn btn-primary" role="button">Git</a></p>
+                    <p>{{ music_detail.2|striptags }}</p>
+                    <p><a target="_blank" href="https://www.youtube.com{{ music_detail.3 }}" class="btn btn-primary" role="button">Git</a></p>
                   </div>
                 </div>
               </div>
 
 
-    {% endfor %}
+
 
  {% endfor %}
 
